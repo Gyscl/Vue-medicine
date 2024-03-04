@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="res_container">
     <div class="form">
       <div class="header">
         <span class="title">账号注册</span>
@@ -31,13 +31,28 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted, onBeforeUnmount } from "vue";
 import { RouterLink } from "vue-router";
 import { type RuleForm } from "@/types/index";
 import type { FormInstance, FormRules } from "element-plus";
 import { ElMessage } from "element-plus";
 import { Md5 } from "ts-md5";
 import { addUserApi } from "@/apis/register";
+import autofit from "autofit.js"; //引入自适应大屏插件autofit
+
+onMounted(() => {
+  autofit.init({
+    dh: 1080,
+    dw: 1920,
+    el: "#app",
+    resize: true
+  },
+    false)
+})
+onBeforeUnmount(() => {
+  autofit.off()
+})
+
 
 const ruleFormRef = ref<FormInstance>();
 const form = reactive<RuleForm>({
@@ -92,7 +107,7 @@ async function addUser() {
 </script>
 
 <style scoped>
-.container {
+.res_container {
   display: flex;
   justify-content: center;
   align-items: center;

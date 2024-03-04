@@ -1,11 +1,11 @@
 <template>
   <div class="layoutNav">
-    <div class="container">
+    <div class="nav_container">
       <span class="navLeft" v-if="loginState">
-          <li>
-              <router-link to="" @click="logOut">退出登录</router-link>
-          </li>
-        </span>
+        <li>
+          <router-link to="" @click="logOut">退出登录</router-link>
+        </li>
+      </span>
       <span class="navLeft" v-else>
         <li>
           <router-link to="/login">请登录</router-link>
@@ -23,6 +23,9 @@
         </li>
         <li>
           <router-link to="/cartList"><i class="iconfont icon-gouwuche"></i> 购物车</router-link>
+        </li>
+        <li>
+          <router-link to="/dashboard"><i class="iconfont icon-houtaiguanli"></i> 后台管理</router-link>
         </li>
       </span>
     </div>
@@ -68,7 +71,7 @@ a:hover {
   background-color: #333333;
 }
 
-.container {
+.nav_container {
   width: 980px;
   margin: 0px auto;
 

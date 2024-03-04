@@ -3,7 +3,7 @@
     <span class="logo"></span>
     <span class="title">药店销售系统</span>
   </div>
-  <div class="container">
+  <div class="log_container">
     <div class="form">
       <h3>账户登录</h3>
       <el-form
@@ -32,10 +32,24 @@
 import { ElMessage } from "element-plus";
 import { Md5 } from "ts-md5";
 import { loginApi } from "@/apis/login";
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted,onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import { type RuleForm } from "@/types/index";
 import type { FormInstance, FormRules } from "element-plus";
+import autofit from "autofit.js"; //引入自适应大屏插件autofit
+
+onMounted(() => {
+  autofit.init({
+    dh: 1080,
+    dw: 1920,
+    el: "#app",
+    resize: true
+  },
+    false)
+})
+onBeforeUnmount(() => {
+  autofit.off()
+})
 
 const router = useRouter();
 
@@ -120,7 +134,7 @@ a {
     font-style: italic;
   }
 }
-.container {
+.log_container {
   position: relative;
   height: 750px;
   background: url("public/images/bg2.jpg") no-repeat;

@@ -1,6 +1,6 @@
 <template>
     <div class="extra">
-        <div class="container">
+        <div class="footer_container">
             <div class="slogan">
                 <a href="javascript:;">
                     <i class="iconfont icon-footer01"></i>
