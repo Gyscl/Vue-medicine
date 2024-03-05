@@ -39,7 +39,7 @@ import { ref } from 'vue'
 
 const router=useRouter()
 //获取登录状态
-let isAuth=JSON.parse(localStorage.getItem('isAuth')) 
+let isAuth = JSON.parse(localStorage.getItem('isAuth') as string) 
 let loginState=ref(isAuth)
 //退出登录逻辑
 function logOut(){

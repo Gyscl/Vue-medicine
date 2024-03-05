@@ -3,16 +3,10 @@
     <div class="form">
       <div class="header">
         <span class="title">账号注册</span>
-        <span class="login"
-          >已有账号,<RouterLink to="/login">去登录></RouterLink>
+        <span class="login">已有账号,<RouterLink to="/login">去登录></RouterLink>
         </span>
       </div>
-      <el-form
-        :model="form"
-        :rules="rules"
-        ref="ruleFormRef"
-        label-width="100px"
-      >
+      <el-form :model="form" :rules="rules" ref="ruleFormRef" label-width="100px">
         <el-form-item label="账号" prop="username">
           <el-input v-model="form.username" />
         </el-form-item>
@@ -114,33 +108,40 @@ async function addUser() {
   height: 100vh;
   background-image: linear-gradient(to right, #a8edea 0%, #fed6e3 100%);
 }
+
 .form {
   width: 600px;
   height: 500px;
   background-color: #fff;
   border: 1px #cacaca solid;
   border-radius: 10px;
+
   .header {
     position: relative;
     height: 50px;
     border-bottom: 1px #cacaca solid;
+
     .title {
       position: absolute;
       left: 10px;
       line-height: 50px;
     }
+
     .login {
       position: absolute;
       right: 10px;
       line-height: 50px;
     }
   }
+
   .el-form-item {
     margin: 30px auto;
   }
+
   .el-input {
     width: 450px;
   }
+
   .el-button {
     width: 400px;
   }

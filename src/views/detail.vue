@@ -46,7 +46,7 @@ import { singleBuyApi } from '@/apis/singleBuy';
 const num = ref(1)
 const route = useRoute()
 const id = route.params.id //路由传参的药品id
-const uid = JSON.parse(localStorage.getItem('userInfo')).id
+const uid = JSON.parse(localStorage.getItem('userInfo') as string).id
 const detailInfo = ref({})
 //根据药品id查询药品信息
 async function getDetailById() {

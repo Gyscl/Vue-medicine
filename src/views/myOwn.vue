@@ -10,24 +10,27 @@
 </template>
 
 <script lang="ts" setup>
-    import {ref} from 'vue'
-    const userinfo = ref({})
-    userinfo.value=JSON.parse(localStorage.getItem('userInfo'))
+import { ref } from 'vue'
+const userinfo = ref({})
+userinfo.value = JSON.parse(localStorage.getItem('userInfo') as string)
 </script>
 
 <style scoped>
-    div{
-        width: 980px;
-        margin: 0px auto;
-    }
-    h3{
-        margin-bottom: 50px;
-    }
-    ul{
-        list-style: none;
-        padding: 0px;
-    }
-    li{
-        margin-bottom: 15px;
-    }
+div {
+    width: 980px;
+    margin: 0px auto;
+}
+
+h3 {
+    margin-bottom: 50px;
+}
+
+ul {
+    list-style: none;
+    padding: 0px;
+}
+
+li {
+    margin-bottom: 15px;
+}
 </style>

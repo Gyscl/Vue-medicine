@@ -57,7 +57,7 @@ import { ref, onMounted } from 'vue'
 import { userOrderApi } from '@/apis/userOrder';
 
 const orderList = ref([])
-const uid = JSON.parse(localStorage.getItem('userInfo')).id
+const uid = JSON.parse(localStorage.getItem('userInfo') as string).id
 
 onMounted(async () => {
     const res = await userOrderApi(uid);

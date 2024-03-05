@@ -50,7 +50,7 @@ import { useSidebarStore } from '../stores/sidebar';
 import { useRouter } from 'vue-router';
 import imgurl from '../assets/img/img.jpg';
 
-const username: string | null = localStorage.getItem('ms_username');
+const username: string | null = JSON.parse(localStorage.getItem('userInfo') as string).name  ;
 const message: number = 2;
 
 const sidebar = useSidebarStore();

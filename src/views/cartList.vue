@@ -71,7 +71,7 @@ import { userCartApi } from '@/apis/userCart'
 
 let cart = ref([])
 //从localStorage中获取用户id
-let uid = JSON.parse(localStorage.getItem('userInfo')).id
+let uid = JSON.parse(localStorage.getItem('userInfo') as string).id
 
 //用户购物车药品Api
 const userCart = async () => {
