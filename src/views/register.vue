@@ -1,7 +1,7 @@
 <template>
   <div class="res_container">
     <div class="form">
-      <div class="header">
+      <div class="res_header">
         <span class="title">账号注册</span>
         <span class="login">已有账号,<RouterLink to="/login">去登录></RouterLink>
         </span>
@@ -17,7 +17,7 @@
           <el-input v-model="form.comfirm" type="password" show-password />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="addUser">立即注册</el-button>
+          <el-button type="primary" @click="addUser(ruleFormRef)">立即注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -76,27 +76,34 @@ const rules = reactive<FormRules<RuleForm>>({
   ],
 });
 
-async function addUser() {
-  try {
-    form.password = Md5.hashAsciiStr(form.password);
-    const res = await addUserApi(form);
-    if (res.data.data.code == 200) {
-      ElMessage({
-        message: res.data.data.msg,
-        type: "success",
-      });
-    } else {
-      ElMessage({
-        message: res.data.data.msg,
-        type: "warning",
-      });
+function addUser(formEl: FormInstance | undefined) {
+  if (!formEl) return
+  formEl.validate(async (valid, fields) => {
+    if (valid) {
+      try {
+        form.password = Md5.hashAsciiStr(form.password);
+        form.comfirm = Md5.hashAsciiStr(form.comfirm as string);
+        const res = await addUserApi(form);
+        if (res.data.data.code == 200) {
+          ElMessage({
+            message: res.data.data.msg,
+            type: "success",
+          });
+        } else {
+          ElMessage({
+            message: res.data.data.msg,
+            type: "warning",
+          });
+        }
+      } catch (error: any) {
+        ElMessage({
+          message: error,
+          type: "warning",
+        });
+      }
     }
-  } catch (error: any) {
-    ElMessage({
-      message: error,
-      type: "warning",
-    });
-  }
+  })
+
 }
 </script>
 
@@ -105,7 +112,7 @@ async function addUser() {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   background-image: linear-gradient(to right, #a8edea 0%, #fed6e3 100%);
 }
 
@@ -116,7 +123,7 @@ async function addUser() {
   border: 1px #cacaca solid;
   border-radius: 10px;
 
-  .header {
+  .res_header {
     position: relative;
     height: 50px;
     border-bottom: 1px #cacaca solid;
