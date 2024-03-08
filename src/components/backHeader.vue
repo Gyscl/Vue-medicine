@@ -12,13 +12,6 @@
 		<div class="logo">后台管理系统</div>
 		<div class="header-right">
 			<div class="header-user-con">
-				<!-- 消息中心 -->
-				<div class="btn-bell" @click="router.push('/tabs')">
-					<el-tooltip effect="dark" :content="message ? `有${message}条未读消息` : `消息中心`" placement="bottom">
-						<i class="el-icon-lx-notice"></i>
-					</el-tooltip>
-					<span class="btn-bell-badge" v-if="message"></span>
-				</div>
 				<!-- 用户头像 -->
 				<el-avatar class="user-avator" :size="30" :src="imgurl" />
 				<!-- 用户名下拉菜单 -->
@@ -31,10 +24,7 @@
 					</span>
 					<template #dropdown>
 						<el-dropdown-menu>
-							<a href="https://github.com/lin-xin/vue-manage-system" target="_blank">
-								<el-dropdown-item>项目仓库</el-dropdown-item>
-							</a>
-							<el-dropdown-item command="user">个人中心</el-dropdown-item>
+							<el-dropdown-item command="home">回到首页</el-dropdown-item>
 							<el-dropdown-item divided command="loginout">退出登录</el-dropdown-item>
 						</el-dropdown-menu>
 					</template>
@@ -50,8 +40,7 @@ import { useSidebarStore } from '../stores/sidebar';
 import { useRouter } from 'vue-router';
 import imgurl from '../assets/img/img.jpg';
 
-const username: string | null = JSON.parse(localStorage.getItem('userInfo') as string).name  ;
-const message: number = 2;
+const username: string | null = JSON.parse(localStorage.getItem('userInfo') as string).name;
 
 const sidebar = useSidebarStore();
 // 侧边栏折叠
@@ -69,10 +58,11 @@ onMounted(() => {
 const router = useRouter();
 const handleCommand = (command: string) => {
 	if (command == 'loginout') {
-		localStorage.removeItem('ms_username');
+		localStorage.removeItem('userInfo');
+		localStorage.setItemt('isAuth', false);
 		router.push('/login');
-	} else if (command == 'user') {
-		router.push('/user');
+	} else if (command == 'home') {
+		router.push('/');
 	}
 };
 </script>
@@ -120,7 +110,6 @@ const handleCommand = (command: string) => {
 	font-size: 24px;
 }
 
-.btn-bell,
 .btn-fullscreen {
 	position: relative;
 	width: 30px;
@@ -132,18 +121,7 @@ const handleCommand = (command: string) => {
 	align-items: center;
 }
 
-.btn-bell-badge {
-	position: absolute;
-	right: 4px;
-	top: 0px;
-	width: 8px;
-	height: 8px;
-	border-radius: 4px;
-	background: #f56c6c;
-	color: #fff;
-}
-
-.btn-bell .el-icon-lx-notice {
+.el-icon-lx-notice {
 	color: #fff;
 }
 

@@ -25,7 +25,7 @@
           <router-link to="/cartList"><i class="iconfont icon-gouwuche"></i> 购物车</router-link>
         </li>
         <li>
-          <router-link to="/dashboard"><i class="iconfont icon-houtaiguanli"></i> 后台管理</router-link>
+          <router-link to="/backend"><i class="iconfont icon-houtaiguanli"></i> 后台管理</router-link>
         </li>
       </span>
     </div>

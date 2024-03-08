@@ -11,7 +11,7 @@
           <el-input v-model="form.username" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="form.password" type="password" show-password @keyup.enter="login" />
+          <el-input v-model="form.password" type="password" show-password @keyup.enter="login(ruleFormRef)" />
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="login(ruleFormRef)">登录</el-button>
@@ -32,6 +32,8 @@ import { useRouter } from "vue-router";
 import { type RuleForm } from "@/types/index";
 import type { FormInstance, FormRules } from "element-plus";
 import autofit from "autofit.js"; //引入自适应大屏插件autofit
+import { usePermissStore } from "@/stores/permiss";
+const permiss = usePermissStore();
 
 onMounted(() => {
   autofit.init({
@@ -74,6 +76,11 @@ function login(formEl: FormInstance | undefined) {
           let boolString: string = String(boolValue)
           localStorage.setItem("isAuth", boolString)
           localStorage.setItem("userInfo", JSON.stringify(res.data.data.userinfo))
+          //设置权限
+          const keys = permiss.defaultList[res.data.data.userinfo.isroot == '是' ? 'admin' : 'user'];
+          permiss.handleSet(keys);
+          localStorage.setItem('ms_keys', JSON.stringify(keys));
+         
           router.push({
             name: 'home'
           })

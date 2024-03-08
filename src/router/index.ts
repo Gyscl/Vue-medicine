@@ -65,10 +65,72 @@ const router = createRouter({
       ],
     },
     {
-      path: "/dashboard",
+      path: "/backend",
       name: "backend",
       component: backEnd,
-      children: [],
+      redirect: "/dashboard",
+      children: [
+        {
+          path: "/dashboard",
+          name: "dashboard",
+          meta: {
+            title: "系统首页",
+            permiss: "1",
+          },
+          component: () =>
+            import(
+              /* webpackChunkName: "dashboard" */ "../views/dashboard.vue"
+            ),
+        },
+        {
+          path: "/medcineManage",
+          name: "medcineManage",
+          meta: {
+            title: "药品管理",
+            permiss: "2",
+          },
+          component: () =>
+            import(
+              /* webpackChunkName: "dashboard" */ "../views/medcineManage.vue"
+            ),
+        },
+        {
+          path: "/inventoryManage",
+          name: "inventoryManage",
+          meta: {
+            title: "库存管理",
+            permiss: "3",
+          },
+          component: () =>
+            import(
+              /* webpackChunkName: "dashboard" */ "../views/inventoryManage.vue"
+            ),
+        },
+        {
+          path: "/orderManage",
+          name: "orderManage",
+          meta: {
+            title: "订单管理",
+            permiss: "4",
+          },
+          component: () =>
+            import(
+              /* webpackChunkName: "dashboard" */ "../views/orderManage.vue"
+            ),
+        },
+        {
+          path: "/userManage",
+          name: "userManage",
+          meta: {
+            title: "用户管理",
+            permiss: "5",
+          },
+          component: () =>
+            import(
+              /* webpackChunkName: "dashboard" */ "../views/userManage.vue"
+            ),
+        },
+      ],
     },
   ],
 });
