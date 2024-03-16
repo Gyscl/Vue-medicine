@@ -1,10 +1,13 @@
 //axios封装http请求
-import axios from 'axios';
+import axios from "axios";
 
 const httpInstance = axios.create({
-    baseURL: 'http://localhost:9999',
-    timeout: 5000,
-    headers: {'Content-Type': 'application/json'}
+  baseURL: "http://localhost:9999",
+  timeout: 5000,
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  },
 });
 
-export default httpInstance
+export default httpInstance;

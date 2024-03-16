@@ -1,36 +1,58 @@
 <template>
     <div>
-        <h3>个人信息</h3>
-        <ul>
-            <li>昵称：{{ userinfo.name }}</li>
-            <li>收货地址：{{ userinfo.address }}</li>
-            <li>是否为管理员：{{ userinfo.isroot }}</li>
-        </ul>
+        <table border="1" cellspacing="0">
+            <thead>
+                <tr>
+                    <th colspan="2">个人信息</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>昵称：</td>
+                    <td>{{ userinfo.name }}</td>
+                </tr>
+                <tr>
+                    <td>地址：</td>
+                    <td>{{ userinfo.address }}</td>
+                </tr>
+                <tr>
+                    <td>身份：</td>
+                    <td>{{ userinfo.isroot ? '管理员' : '普通用户' }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
 <script lang="ts" setup>
 import { ref } from 'vue'
-const userinfo = ref({})
+const userinfo: any = ref({})
 userinfo.value = JSON.parse(localStorage.getItem('userInfo') as string)
 </script>
 
 <style scoped>
 div {
     width: 980px;
+    height: 370px;
     margin: 0px auto;
 }
 
-h3 {
-    margin-bottom: 50px;
-}
+table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 600px;
+    margin: 10px auto;
+    border-radius: 50px;
 
-ul {
-    list-style: none;
-    padding: 0px;
-}
+    th {
+        height: 80px;
+        font-size: 26px;
+    }
 
-li {
-    margin-bottom: 15px;
+    td {
+        height: 60px;
+        font-size: 20px;
+        text-align: center;
+    }
 }
 </style>

@@ -3,11 +3,11 @@
         <table>
             <thead>
                 <tr>
-                    <th width="">商品信息</th>
-                    <th width="">单价</th>
-                    <th width="">数量</th>
-                    <th width="">小计</th>
-                    <th width="">操作</th>
+                    <th width="436">商品信息</th>
+                    <th width="136">单价</th>
+                    <th width="136">数量</th>
+                    <th width="136">小计</th>
+                    <th width="136">操作</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,21 +49,39 @@
                 </tr>
             </tbody>
         </table>
+        <div class="example-pagination-block">
+            <el-pagination background layout="total, prev, pager, next" :current-page="query.pageIndex"
+                :page-size="query.pageSize" :total="pageTotal" @current-change="handlePageChange"></el-pagination>
+        </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { userOrderApi } from '@/apis/userOrder';
 
-const orderList = ref([])
+const orderList: any = ref([])
 const uid = JSON.parse(localStorage.getItem('userInfo') as string).id
-
-onMounted(async () => {
-    const res = await userOrderApi(uid);
-    orderList.value = res.data.data.res;
-    console.log('订单', orderList.value);
+const query = reactive({
+    pageIndex: 1,
+    pageSize: 5
 })
+const pageTotal = ref(0);
+//获取数据
+const getData = async () => {
+    const pageSize = query.pageSize
+    const currentPage = query.pageIndex
+    const res = await userOrderApi({ uid, pageSize, currentPage })
+    orderList.value = res.data.data.list
+    pageTotal.value = res.data.data.total
+}
+getData()
+// 分页导航
+const handlePageChange = (val: number) => {
+    query.pageIndex = val;
+    getData();
+};
+
 </script>
 
 <style scoped>
@@ -93,5 +111,15 @@ table {
         height: 80px;
         text-align: center;
     }
+}
+
+.example-pagination-block {
+    display: flex;
+    margin: 15px auto;
+}
+
+.el-empty {
+    position: relative;
+    left: 450px;
 }
 </style>
