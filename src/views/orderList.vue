@@ -7,6 +7,7 @@
                     <th width="136">单价</th>
                     <th width="136">数量</th>
                     <th width="136">小计</th>
+                    <th width="136">订单状态</th>
                     <th width="136">操作</th>
                 </tr>
             </thead>
@@ -35,6 +36,14 @@
                     <td width="136">
                         <p>
                             &yen; {{ o.onum * o.mprice }}
+                        </p>
+                    </td>
+                    <td width="136">
+                        <p>
+                            <span v-if="o.ostate == 1"><el-button type="success" disabled
+                                    style="cursor: default">已发货</el-button></span>
+                            <span v-else><el-button type="warning" disabled
+                                    style="cursor: default">未发货</el-button></span>
                         </p>
                     </td>
                     <td width="136">
