@@ -12,11 +12,11 @@
                     </div>
                     <div class="user-info-list">
                         上次登录时间：
-                        <span>2022-10-01</span>
+                        <span>2024-3-18</span>
                     </div>
                     <div class="user-info-list">
                         上次登录地点：
-                        <span>东莞</span>
+                        <span>成都</span>
                     </div>
                 </el-card>
                 <el-card shadow="hover" style="height: 252px">
@@ -70,7 +70,7 @@
                                     <Goods />
                                 </el-icon>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">100</div>
+                                    <div class="grid-num">10</div>
                                     <div>商品数量</div>
                                 </div>
                             </div>
@@ -107,12 +107,12 @@
         <el-row :gutter="20">
             <el-col :span="12">
                 <el-card shadow="hover">
-                    <schart ref="bar" class="schart" canvasId="bar" :options="options"></schart>
+                    <div ref="pieChart" id="pieChart" style="width: 100%;height:400px;"></div>
                 </el-card>
             </el-col>
             <el-col :span="12">
                 <el-card shadow="hover">
-                    <schart ref="line" class="schart" canvasId="line" :options="options2"></schart>
+                    <div ref="barChart" id="barChart" style="width: 100%;height:400px;"></div>
                 </el-card>
             </el-col>
         </el-row>
@@ -120,57 +120,103 @@
 </template>
 
 <script setup lang="ts" name="dashboard">
-import Schart from 'vue-schart';
-import { reactive } from 'vue';
+import { reactive, onMounted, getCurrentInstance } from 'vue';
 import imgurl from '../assets/img/img.jpg';
+import { todaySellApi } from '@/apis/todaySell';
+import { stockNumApi } from '@/apis/stockNum';
 
-const name = JSON.parse(localStorage.getItem('userInfo') as string).name ;
+const name = JSON.parse(localStorage.getItem('userInfo') as string).name;
 const isroot = JSON.parse(localStorage.getItem('userInfo') as string).isroot
 const role: string = isroot === '是' ? '超级管理员' : '普通用户';
+let pieChartData: any = []
+let barChartData: any = {}
 
-const options = {
-    type: 'bar',
-    title: {
-        text: '最近一周各品类销售图'
-    },
-    xRorate: 25,
-    labels: ['周一', '周二', '周三', '周四', '周五'],
-    datasets: [
-        {
-            label: '家电',
-            data: [234, 278, 270, 190, 230]
+// 通过 internalInstance.appContext.config.globalProperties 获取全局属性或方法
+let internalInstance: any = getCurrentInstance();
+let echarts = internalInstance.appContext.config.globalProperties.$echarts;
+
+onMounted(() => {
+    getTodaySell(),
+        getStockNum()
+})
+
+//获取今日销量
+async function getTodaySell() {
+    let res = await todaySellApi();
+    if (res.data.code == 1) {
+        pieChartData = res.data.data
+    }
+    initPieChart()
+}
+//获取库存数量
+async function getStockNum() {
+    let res = await stockNumApi();
+    console.log('res', res);
+
+    if (res.data.code == 1) {
+        barChartData = res.data.data
+    }
+    console.log('barChartData', barChartData);
+    initBarChart()
+}
+//echart饼图:今日销量
+function initPieChart() {
+    //获取DOM节点
+    var pieChartDom = document.getElementById('pieChart');
+    // 创建 Echarts 实例并使用获取到的 DOM 节点
+    const myChart = echarts.init(pieChartDom);
+    // 配置饼图的数据和样式
+    const option = {
+        title: {
+            text: '今日销量',
+            left: 'center'
         },
-        {
-            label: '百货',
-            data: [164, 178, 190, 135, 160]
+        tooltip: {
+            trigger: 'item'
         },
-        {
-            label: '食品',
-            data: [144, 198, 150, 235, 120]
-        }
-    ]
-};
-const options2 = {
-    type: 'line',
-    title: {
-        text: '最近几个月各品类销售趋势图'
-    },
-    labels: ['6月', '7月', '8月', '9月', '10月'],
-    datasets: [
-        {
-            label: '家电',
-            data: [234, 278, 270, 190, 230]
+        series: [
+            {
+                type: 'pie',
+                data: pieChartData
+            }
+        ]
+    };
+    // 使用配置项显示饼图
+    myChart.setOption(option);
+}
+//echart柱状图:库存数量
+function initBarChart() {
+    //获取DOM节点
+    var barChartDOM = document.getElementById('barChart');
+    // 创建 Echarts 实例并使用获取到的 DOM 节点
+    const myChart = echarts.init(barChartDOM);
+    // 配置饼图的数据和样式
+    const option = {
+        title: {
+            text: '库存数量',
+            left: 'center'
         },
-        {
-            label: '百货',
-            data: [164, 178, 150, 135, 160]
+        tooltip: {
+            trigger: 'item'
         },
-        {
-            label: '食品',
-            data: [74, 118, 200, 235, 90]
-        }
-    ]
-};
+        xAxis: {
+            type: 'category',
+            data: barChartData.xAxis
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
+            {
+                data: barChartData.yAxis,
+                type: 'bar'
+            }
+        ]
+    };
+    // 使用配置项显示饼图
+    myChart.setOption(option);
+}
+
 const todoList = reactive([
     {
         title: '今天要修复100个bug',
@@ -296,10 +342,5 @@ const todoList = reactive([
 .todo-item-del {
     text-decoration: line-through;
     color: #999;
-}
-
-.schart {
-    width: 100%;
-    height: 300px;
 }
 </style>

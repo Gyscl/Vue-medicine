@@ -17,12 +17,9 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
-  optimizeDeps: {
-		include: ['schart.js']
-	},
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
-  }
+  },
 });
