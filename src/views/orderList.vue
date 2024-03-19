@@ -48,7 +48,8 @@
                     </td>
                     <td width="136">
                         <p>
-                            <el-popconfirm title="确认删除吗?" confirm-button-text="确认" cancel-button-text="取消">
+                            <el-popconfirm title="确认删除吗?" confirm-button-text="确认" cancel-button-text="取消"
+                                @confirm="deleteOrder(o)">
                                 <template #reference>
                                     <a href="javascript:;">删除</a>
                                 </template>
@@ -66,8 +67,10 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive } from 'vue'
 import { userOrderApi } from '@/apis/userOrder';
+import { ElMessage } from "element-plus";
+import { deleteOrderApi } from '@/apis/deleteOrder';
 
 const orderList: any = ref([])
 const uid = JSON.parse(localStorage.getItem('userInfo') as string).id
@@ -90,7 +93,23 @@ const handlePageChange = (val: number) => {
     query.pageIndex = val;
     getData();
 };
-
+//删除订单
+function deleteOrder(item: any) {
+    deleteOrderApi({ id: item.oid }).then((res: any) => {
+        if (res.data.data.code == 200) {
+            ElMessage({
+                type: 'success',
+                message: res.data.data.msg
+            })
+        } else {
+            ElMessage({
+                type: 'error',
+                message: res.data.data.msg
+            })
+        }
+        getData()
+    })
+}
 </script>
 
 <style scoped>

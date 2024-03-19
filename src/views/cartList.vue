@@ -45,7 +45,8 @@
                     </td>
                     <td width="136">
                         <p>
-                            <el-popconfirm title="确认删除吗?" confirm-button-text="确认" cancel-button-text="取消">
+                            <el-popconfirm title="确认删除吗?" confirm-button-text="确认" cancel-button-text="取消"
+                                @confirm="deleteCart(c)">
                                 <template #reference>
                                     <a href="javascript:;">删除</a>
                                 </template>
@@ -72,6 +73,7 @@ import { RouterLink } from 'vue-router'
 import { userCartApi } from '@/apis/userCart'
 import { singleBuyApi } from '@/apis/singleBuy'
 import { ElMessage } from "element-plus";
+import { deleteCartApi } from '@/apis/deleteCart';
 
 let allChecked = ref(false)
 let cart: any = ref([])
@@ -123,7 +125,6 @@ function submitOrder() {
             selectArr.push({ uid: item.uid, mid: item.mid, cnum: item.cnum })
         }
     });
-    console.log('params', selectArr);
     for (var item of selectArr) {
         singleBuyApi({ uid: item.uid, mid: item.mid, num: item.cnum }).then(res => {
             if (res.data.data.code == 200) {
@@ -140,6 +141,23 @@ function submitOrder() {
         })
     }
 
+}
+//删除
+function deleteCart(item: any) {
+    deleteCartApi(item.cid).then((res: any) => {
+        if (res.data.data.code == 200) {
+            ElMessage({
+                type: 'success',
+                message: res.data.data.msg
+            })
+        } else {
+            ElMessage({
+                type: 'error',
+                message: res.data.data.msg
+            })
+        }
+        getData()
+    })
 }
 </script>
 
