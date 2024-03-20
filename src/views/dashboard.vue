@@ -77,30 +77,35 @@
                         </el-card>
                     </el-col>
                 </el-row>
-                <el-card shadow="hover" style="height: 403px">
+                <el-card shadow="hover" style="height: 403px;overflow: auto;">
                     <template #header>
                         <div class="clearfix">
                             <span>待办事项</span>
-                            <el-button style="float: right; padding: 3px 0" text>添加</el-button>
+                            <el-button style="float: right; padding: 3px 0" text @click="visible = true">添加</el-button>
                         </div>
                     </template>
-
-                    <el-table :show-header="false" :data="todoList" style="width: 100%">
+                    <el-table :show-header="false" :data="todoList" style="width: 100% ;">
                         <el-table-column width="40">
                             <template #default="scope">
-                                <el-checkbox v-model="scope.row.status"></el-checkbox>
+                                <!-- 两次取非将数字转化为布尔值 -->
+                                <el-checkbox v-model="scope.row.status" :checked="!!scope.row.status"
+                                    @change="updateStatus(scope.row)"></el-checkbox>
                             </template>
                         </el-table-column>
                         <el-table-column>
                             <template #default="scope">
-                                <div class="todo-item" :class="{
-            'todo-item-del': scope.row.status
-        }">
-                                    {{ scope.row.title }}
+                                <div class="todo-item" :class="{ 'todo-item-del': scope.row.status }">
+                                    {{ scope.row.task }}
                                 </div>
                             </template>
                         </el-table-column>
                     </el-table>
+
+                    <el-dialog title="新增事项" width="400px" v-model="visible">
+                        <el-input v-model="input" style="width: 240px; margin-right: 30px;"
+                            placeholder="Please input" />
+                        <el-button type="primary" plain @click="addTask">确认</el-button>
+                    </el-dialog>
                 </el-card>
             </el-col>
         </el-row>
@@ -120,23 +125,31 @@
 </template>
 
 <script setup lang="ts" name="dashboard">
-import { reactive, onMounted, getCurrentInstance } from 'vue';
+import { ref, reactive, onMounted, getCurrentInstance } from 'vue';
+import { ElMessage } from "element-plus";
 import imgurl from '../assets/img/img.jpg';
+import { taskListApi } from '@/apis/taskList';
+import { addTaskApi } from '@/apis/addTask';
+import { updateTaskApi } from '@/apis/updateTaskStatus';
 import { todaySellApi } from '@/apis/todaySell';
 import { stockNumApi } from '@/apis/stockNum';
 
 const name = JSON.parse(localStorage.getItem('userInfo') as string).name;
 const isroot = JSON.parse(localStorage.getItem('userInfo') as string).isroot
 const role: string = isroot === '是' ? '超级管理员' : '普通用户';
-let pieChartData: any = []
-let barChartData: any = {}
+let visible = ref(false);
+const input = ref('')  //新增待办事项
+let todoList: any = ref([]) //待办事项列表
+let pieChartData: any = [] //饼图数据
+let barChartData: any = {} //柱状图数据
 
 // 通过 internalInstance.appContext.config.globalProperties 获取全局属性或方法
 let internalInstance: any = getCurrentInstance();
 let echarts = internalInstance.appContext.config.globalProperties.$echarts;
 
 onMounted(() => {
-    getTodaySell(),
+    getTask(),
+        getTodaySell(),
         getStockNum()
 })
 
@@ -151,12 +164,9 @@ async function getTodaySell() {
 //获取库存数量
 async function getStockNum() {
     let res = await stockNumApi();
-    console.log('res', res);
-
     if (res.data.code == 1) {
         barChartData = res.data.data
     }
-    console.log('barChartData', barChartData);
     initBarChart()
 }
 //echart饼图:今日销量
@@ -216,33 +226,46 @@ function initBarChart() {
     // 使用配置项显示饼图
     myChart.setOption(option);
 }
-
-const todoList = reactive([
-    {
-        title: '今天要修复100个bug',
-        status: false
-    },
-    {
-        title: '今天要修复100个bug',
-        status: false
-    },
-    {
-        title: '今天要写100行代码加几个bug吧',
-        status: false
-    },
-    {
-        title: '今天要修复100个bug',
-        status: false
-    },
-    {
-        title: '今天要修复100个bug',
-        status: true
-    },
-    {
-        title: '今天要写100行代码加几个bug吧',
-        status: true
+//获取今日待办事项
+async function getTask() {
+    taskListApi().then((res: any) => {
+        todoList.value = res.data.data
+    })
+}
+//添加待办事项
+async function addTask() {
+    let res = await addTaskApi({ task: input.value })
+    if (res.data.data.code == 200) {
+        input.value = ''
+        visible.value = false
+        getTask()
+        ElMessage({
+            message: res.data.data.msg,
+            type: "success",
+        });
+    } else {
+        ElMessage({
+            message: res.data.data.msg,
+            type: "warning",
+        });
     }
-]);
+}
+//更新事项状态
+function updateStatus(item: any) {
+    updateTaskApi(item).then((res: any) => {
+        if (res.data.data.code == 200) {
+            ElMessage({
+                message: res.data.data.msg,
+                type: "success",
+            });
+        } else {
+            ElMessage({
+                message: res.data.data.msg,
+                type: "warning",
+            });
+        }
+    })
+}
 </script>
 
 <style scoped>
