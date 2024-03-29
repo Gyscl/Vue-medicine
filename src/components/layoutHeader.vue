@@ -16,7 +16,7 @@
         </button>
       </div>
       <div v-show="isShow" class="historyContainer">
-        <div class="header">
+        <div class="historyHeader">
           <p class="title">搜索历史</p>
           <button class="btnAll" @mousedown.prevent="deleteAll">
             <i class="iconfont icon-delete"></i>清空
@@ -52,9 +52,10 @@ let {
 </script>
 
 <style scoped>
-a{
-    color: #ff6537;
+a {
+  color: #ff6537;
 }
+
 .layoutHeader {
   width: 980px;
   height: 120px;
@@ -96,13 +97,13 @@ a{
   border: 1px solid #ccc;
   overflow: auto;
 
-  .header {
+  .historyHeader {
     height: 30px;
     overflow: auto;
 
     .title {
       float: left;
-      color: red;
+      color: #000;
     }
 
     .btnAll {
@@ -114,6 +115,8 @@ a{
 }
 
 li {
+  display: block;
+  height: 20px;
   padding: 5px;
   background-color: rgb(240, 240, 245);
 }
@@ -130,5 +133,6 @@ li:hover {
   float: right;
   background-color: rgb(240, 240, 245);
   border: none;
+  line-height: 20px;
 }
 </style>

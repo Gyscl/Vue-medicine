@@ -2,6 +2,9 @@
   <div class="header">
     <span class="logo"></span>
     <span class="title">药店销售系统</span>
+    <span class="visitor" @click="router.push({
+      name: 'home'
+    })">游客进入</span>
   </div>
   <div class="log_container">
     <div class="form">
@@ -80,7 +83,6 @@ function login(formEl: FormInstance | undefined) {
           const keys = permiss.defaultList[res.data.data.userinfo.isroot == '是' ? 'admin' : 'user'];
           permiss.handleSet(keys);
           localStorage.setItem('ms_keys', JSON.stringify(keys));
-         
           router.push({
             name: 'home'
           })
@@ -142,6 +144,14 @@ a {
     font-size: 36px;
     font-weight: 600;
     font-style: italic;
+  }
+
+  .visitor {
+    position: absolute;
+    right: 50px;
+    line-height: 110px;
+    font-size: 18px;
+    cursor: pointer;
   }
 }
 

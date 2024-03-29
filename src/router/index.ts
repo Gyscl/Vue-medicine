@@ -62,6 +62,14 @@ const router = createRouter({
             requireAuth: true,
           },
         },
+        {
+          path: "searchList",
+          name: "searchList",
+          component: () => import("@/views/searchList.vue"),
+          meta: {
+            requireAuth: true,
+          },
+        },
       ],
     },
     {
