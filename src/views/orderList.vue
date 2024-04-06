@@ -18,7 +18,7 @@
                 <tr v-else v-for="o in orderList" :key="o.cid">
                     <td width="436">
                         <div>
-                            <RouterLink :to="`/detail/:${o.mid}`"><img width="100" :src="`/public/images/${o.msrc}`">
+                            <RouterLink :to="`/detail/${o.mid}`"><img width="100" :src="`/public/images/${o.msrc}`">
                             </RouterLink>
                             <div>
                                 <p>{{ o.mname }}</p>
@@ -138,7 +138,7 @@ table {
     td {
         height: 80px;
         text-align: center;
-    }
+    } 
 }
 
 .example-pagination-block {

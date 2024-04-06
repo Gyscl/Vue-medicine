@@ -70,6 +70,14 @@ const router = createRouter({
             requireAuth: true,
           },
         },
+        {
+          path: "messageBoard",
+          name: "messageBoard",
+          component: () => import("@/views/messageBoard.vue"),
+          meta: {
+            requireAuth: true,
+          },
+        },
       ],
     },
     {

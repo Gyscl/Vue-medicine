@@ -23,7 +23,7 @@
                     </td>
                     <td width="436">
                         <div>
-                            <RouterLink :to="`/detail/:${c.mid}`"><img width="100" :src="`/public/images/${c.msrc}`">
+                            <RouterLink :to="`/detail/${c.mid}`"><img width="100" :src="`/public/images/${c.msrc}`">
                             </RouterLink>
                             <div>
                                 <p>{{ c.mname }}</p>

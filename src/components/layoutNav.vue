@@ -19,7 +19,10 @@
           <router-link to="/myOwn"><i class="iconfont icon-shouye"></i>我的</router-link>
         </li>
         <li>
-          <router-link to="/orderList">我的订单</router-link>
+          <router-link to="/messageBoard"><i class="iconfont icon-liuyan"></i>留言板</router-link>
+        </li>
+        <li>
+          <router-link to="/orderList"><i class="iconfont icon-dingdan"></i>我的订单</router-link>
         </li>
         <li>
           <router-link to="/cartList"><i class="iconfont icon-gouwuche"></i> 购物车</router-link>

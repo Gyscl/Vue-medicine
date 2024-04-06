@@ -15,7 +15,13 @@ export default function () {
   //点击查询
   function search() {
     searchApi({ name: searchInfo.value }).then((res: any) => {
-      if (res.data.data.code == 200) {
+      console.log(res);
+      if(res.data.code==0){
+        ElMessage({
+          message: res.data.message,
+          type: "warning",
+        });
+      } else if (res.data.data.code == 200) {
         searchData.searchlist = res.data.data.res;
         ElMessage({
           message: res.data.data.msg,
