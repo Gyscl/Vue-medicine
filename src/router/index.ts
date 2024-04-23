@@ -85,6 +85,9 @@ const router = createRouter({
       name: "backend",
       component: backEnd,
       redirect: "/dashboard",
+      meta: {
+        requireAuth: true,
+      },
       children: [
         {
           path: "/dashboard",

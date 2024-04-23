@@ -21,14 +21,15 @@
                         功效：{{ detailInfo.minfo }}
                     </li>
                     <li>
-                        单价：<span style="font-size: 26px; color: #ff6637; font-weight: 800;">&yen;{{ detailInfo.mprice}}</span>
+                        单价：<span style="font-size: 26px; color: #ff6637; font-weight: 800;">&yen;{{
+                            detailInfo.mprice }}</span>
                     </li>
                     <li>
                         数量：<el-input-number v-model="num" :min="1" :max="10" />
                     </li>
                 </ul>
-                <el-button type="primary" @click="singleBuy(id)">立即购买</el-button>
-                <el-button :icon="ShoppingTrolley" @click="addCart(id)">加入购物车</el-button>
+                <el-button :disabled="uid == undefined" type="primary" @click="singleBuy(id)">立即购买</el-button>
+                <el-button :disabled="uid == undefined" :icon="ShoppingTrolley" @click="addCart(id)">加入购物车</el-button>
             </div>
         </div>
     </div>
@@ -46,8 +47,9 @@ import { singleBuyApi } from '@/apis/singleBuy';
 const num = ref(1)
 const route = useRoute()
 const id = route.params.id //路由传参的药品id
-const uid = JSON.parse(localStorage.getItem('userInfo') as string).id
-const detailInfo:any = ref({})
+const uid = JSON.parse(localStorage.getItem('userInfo') as string)?.id
+
+const detailInfo: any = ref({})
 //根据药品id查询药品信息
 async function getDetailById() {
     let res = await detailByIdApi(id)
@@ -74,7 +76,7 @@ async function addCart(id: any) {
     }
 }
 //单个购买
-async function singleBuy(id:any){
+async function singleBuy(id: any) {
     const param = {
         uid: uid,
         mid: Number(id),

@@ -25,10 +25,10 @@ const router = useRouter()
 function getImageUrl(name: string) {
     return new URL(`/public/images/${name}`, import.meta.url).href;
 }
-function toDetail(id: any) {
+function toDetail(mid: any) {
     router.push({
         name: 'detail',
-        params: { id: id }
+        params: { id: mid }
     })
 }
 
