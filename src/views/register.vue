@@ -16,6 +16,10 @@
         <el-form-item label="确认密码" prop="comfirm">
           <el-input v-model="form.comfirm" type="password" show-password />
         </el-form-item>
+        <el-form-item label="身份类型" prop="comfirm">
+          <el-select v-model="form.isroot" placeholder="Select" style="width: 450px">
+            <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" /></el-select>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="addUser(ruleFormRef)">立即注册</el-button>
         </el-form-item>
@@ -53,8 +57,19 @@ const form = reactive<RuleForm>({
   username: "",
   password: "",
   comfirm: "",
+  isroot: 0
 });
 
+const options = [
+  {
+    value: 0,
+    label: '用户',
+  },
+  {
+    value: 1,
+    label: '管理员',
+  }
+]
 //设置自定义校验规则，用于校验【确认密码】
 const validatePass = (rule: any, value: any, callback: any) => {
   if (value != form.password) {

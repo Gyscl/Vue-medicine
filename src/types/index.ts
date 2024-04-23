@@ -1,6 +1,7 @@
 //表单校验接口
 export interface RuleForm{
     username:string,
-    password:string
-    comfirm?:string
+    password:string,
+    comfirm?:string,
+    isroot?:number
 }
