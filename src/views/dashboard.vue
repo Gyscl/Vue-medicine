@@ -70,7 +70,7 @@
                                     <Goods />
                                 </el-icon>
                                 <div class="grid-cont-right">
-                                    <div class="grid-num">10</div>
+                                    <div class="grid-num">20</div>
                                     <div>商品数量</div>
                                 </div>
                             </div>
