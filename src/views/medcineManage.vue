@@ -166,8 +166,6 @@ const updateData = (row: any) => {
                 visible.value = false;
             })
     }
-    // idEdit.value ? (tableData.value[idx] = row) : tableData.value.unshift(row);
-    // console.log(tableData.value);
     closeDialog();
 };
 
