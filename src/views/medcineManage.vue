@@ -116,7 +116,12 @@ const handleDelete = (index: number) => {
                 })
             }
         })
-        .catch(() => { });
+        .catch((err: any) => {
+            ElMessage({
+                type: 'warning',
+                message: err
+            })
+        });
 };
 
 const visible = ref(false);

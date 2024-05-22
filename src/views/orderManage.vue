@@ -100,7 +100,12 @@ const handleDelete = (index: number) => {
                 })
             }
         })
-        .catch(() => { });
+        .catch((err: any) => {
+            ElMessage({
+                type: 'warning',
+                message: err
+            })
+        });
 };
 //发货操作
 const send = (index: number) => {
